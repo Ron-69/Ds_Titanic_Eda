@@ -21,39 +21,51 @@ Prever a **Sobrevivência** (`Survived` - Variável Target Binária) dos passage
 
 ---
 
-## 2. Abordagem da Análise Exploratória de Dados (EDA)
+## 2. Análise Exploratória de Dados (EDA)
 
-A EDA foi conduzida com foco em traduzir características complexas em *features* preditivas, seguindo o seguinte fluxo:
+A EDA foi conduzida com foco em traduzir características complexas em *features* preditivas, utilizando o rigor estatístico.
 
-### 2.1. Análise de Qualidade de Dados e Distribuição
+### 2.1. Análise de Qualidade de Dados e Estatísticas Sumárias
 
-* **Identificação de Nulos:** Utilização de `df.isnull().sum()` para quantificar a perda de dados em colunas críticas (`Age`, `Cabin`, `Embarked`).
-* **Análise de Assimetria (Skewness):** Uso do `seaborn.histplot` e `scipy.stats.skew` na coluna `Fare` (Tarifa) para confirmar a **assimetria para a direita**. Este *insight* direciona a aplicação de uma **transformação logarítmica** no Pré-processamento para normalizar a distribuição e melhorar a performance de modelos.
-* **Detecção de Outliers:** Utilização de `seaborn.boxplot` para visualizar a dispersão de `Age` e `Fare` e entender o impacto de valores extremos.
+A primeira etapa envolveu o uso de **`df.info()`** e **`df.describe(include='all')`** para quantificar a qualidade e a distribuição inicial dos dados.
+
+| Coluna | Descoberta Estatística Chave | Implicações para o Pré-processamento |
+| :--- | :--- | :--- |
+| **`Survived`**| Taxa de sobrevivência geral de **38.4%** (`Média = 0.3838`). | Indica um desbalanceamento moderado de classes. |
+| **`Age`** | **20% de valores ausentes** (714 de 891). Média (29.7) e Mediana (28.0) próximas. | Será imputada com a **Mediana**, pois é mais robusta a *outliers*. |
+| **`Fare`** | **Forte assimetria à direita** (Média $32.20 vs. Mediana $14.45). Max é $512. | **Transformação logarítmica** será obrigatória para mitigar a assimetria e o impacto dos *outliers*. |
+| **`Cabin`** | **77% de valores ausentes** (204 de 891). | A coluna bruta será transformada em uma *feature* **binária** (`Has_Cabin`). |
+| **`Embarked`** | Apenas **2 valores ausentes**. | Imputação simples pela **Moda** (Porto mais frequente). |
+| **`Pclass`** | **Mediana = 3.0**, confirmando que a 3ª classe era a mais populosa. | Confirma ser uma variável altamente preditiva (status social). |
 
 ### 2.2. Engenharia de Features Chave (Feature Engineering)
 
-* **Extração de Títulos:** A coluna `Name` foi explorada para extrair o **Título do Passageiro** (`Mr.`, `Mrs.`, `Master.`, `Rev.`, etc.). Este novo recurso é altamente preditivo, pois reflete o status social e a idade (ex: `Master` é usado para meninos, indicando uma alta probabilidade de serem salvos).
-* **Engenharia Familiar:** As colunas `SibSp` (irmãos/cônjuges) e `Parch` (pais/filhos) foram combinadas para criar a *feature* **`FamilySize`**. Adicionalmente, foi criada a *feature* **`IsAlone`** (Se o passageiro viajava sozinho), um preditor conhecido por sua relevância na chance de sobrevivência.
+As seguintes *features* serão construídas para aumentar o poder preditivo do modelo, conforme os *insights* de negócio:
+
+* **Extração de Títulos:** A coluna `Name` será explorada para extrair o **Título do Passageiro** (`Mr.`, `Mrs.`, `Master.`, etc.), que é um poderoso preditor de status social e idade.
+* **Engenharia Familiar:** As colunas `SibSp` e `Parch` serão combinadas para criar a *feature* **`FamilySize`** e a *feature* binária **`IsAlone`** (Se o passageiro viajava sozinho), ambas com forte correlação com a sobrevivência.
 
 ---
 
-## 3. Conclusões e Próximos Passos
+## 3. Conclusões e Plano de Ação (Próximos Passos)
 
-### 💡 Insights Chave
+### 💡 Insights Chave da EDA Visual
 
-1.  **Status Social:** A taxa de sobrevivência é diretamente proporcional à **Classe do Bilhete** (`Pclass`). Passageiros da 1ª Classe tiveram a maior probabilidade de sobrevivência, um *insight* confirmado pelo `seaborn.barplot`.
-2.  **Idade e Gênero:** A regra "Mulheres e Crianças primeiro" é visível nos dados. A análise da idade versus sobrevivência (`seaborn.boxplot`) mostra uma clara vantagem para mulheres e crianças.
-3.  **Tarifa (Fare):** A alta assimetria da tarifa e sua correlação com a `Pclass` reforçam que o poder de compra e o status eram os preditores mais fortes.
+Os gráficos de `seaborn.barplot` e `seaborn.boxplot` confirmaram:
 
-### 🚀 Próximos Passos
+1.  **Status Social:** A taxa de sobrevivência é diretamente proporcional à **Classe do Bilhete** (`Pclass`).
+2.  **Idade e Gênero:** A regra "Mulheres e Crianças primeiro" é visível, sendo o **Gênero** o preditor categórico mais forte.
+3.  **Tarifa (Fare):** A alta assimetria e sua correlação com a `Pclass` reforçam que o poder de compra era um fator determinante.
 
-Com a EDA concluída e os *insights* de Engenharia de Features definidos, o projeto avança para a fase de **Modelagem**:
+### 🚀 Próximos Passos no Pipeline
 
-1.  **Tratamento de Nulos:** Imputação de `Age` (Mediana) e `Embarked` (Moda).
-2.  **Codificação:** Aplicação de *One-Hot Encoding* nas variáveis categóricas relevantes.
-3.  **Modelagem Preditiva:** Treinamento de modelos de Classificação (Regressão Logística, Random Forest) para prever `Survived`.
+1.  **Pré-processamento:** Executar a imputação de nulos (`Age`, `Embarked`) e a transformação logarítmica de `Fare`.
+2.  **Feature Engineering:** Implementar a criação de `Title`, `FamilySize`, `IsAlone` e `Has_Cabin`.
+3.  **Codificação:** Aplicar **Codificação One-Hot** nas variáveis categóricas relevantes (ex: `Pclass`, `Embarked`, `Title`).
+4.  **Modelagem Preditiva:** Treinamento e avaliação de modelos de Classificação (Regressão Logística, Random Forest).
 
 ---
 
 ## 🔗 Estrutura do Repositório
+
+ds_titanic_eda_python/ ├── venv/ # Ignorado pelo Git (Ambiente Virtual) ├── notebooks/ │ └── ds_titanic_eda.ipynb # Notebook principal com EDA e código de Feature Engineering ├── data/ │ └── Titanic-Dataset.csv ├── README.md # Este arquivo ├── requirements.txt # Lista de dependências └── .gitignore # Arquivo para exclusão de pastas (venv/) e arquivos de sistema
