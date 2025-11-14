@@ -1,0 +1,19 @@
+# Arquivos de Sistema
+.DS_Store
+.ipynb_checkpoints/
+*.pyc
+*.swp
+
+# Ambientes Virtuais (Virtual Environments)
+venv/
+.venv/
+ds_titanic_venv/  
+
+# Credenciais e Logs
+*.log
+*.sqlite
+*secrets.txt
+
+# Dados (Muitas vezes, dados brutos são ignorados)
+data/*.csv
+data/*.xlsx
