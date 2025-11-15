@@ -36,7 +36,25 @@ A primeira etapa envolveu o uso de **`df.info()`** e **`df.describe(include='all
 | **`Fare`** | **Forte assimetria à direita** (Média $32.20 vs. Mediana $14.45). Max é $512. | **Transformação logarítmica** será obrigatória para mitigar a assimetria e o impacto dos *outliers*. |
 | **`Cabin`** | **77% de valores ausentes** (204 de 891). | A coluna bruta será transformada em uma *feature* **binária** (`Has_Cabin`). |
 | **`Embarked`** | Apenas **2 valores ausentes**. | Imputação simples pela **Moda** (Porto mais frequente). |
-| **`Pclass`** | **Mediana = 3.0**, confirmando que a 3ª classe era a mais populosa. | Confirma ser uma variável altamente preditiva (status social). |
+| **`Pclass`** | **Mediana = 3.0**, confirmando que a 3ª classe era a mais populosa. | Confirma ser uma variável altamente preditiva (status social). 
+
+### 💡 Insights Chave da EDA Visual
+
+A análise gráfica das relações entre as variáveis confirmou as hipóteses iniciais e orientou a Engenharia de Features:
+
+1.  **Status Social e Gênero:** A sobrevivência foi fortemente influenciada pela `Pclass` e `Sex`.
+    
+    ![Taxa de Sobrevivência por Gênero e Classe de Bilhete](plots/survival_rate_sex_pclass.png)
+
+2.  **Idade e Outliers:** O Boxplot da Idade mostrou a distribuição em relação à sobrevivência.
+    
+    ![Distribuição da Idade por Sobrevivência](plots/age_distribution_boxplot.png)
+
+3.  **Tarifa (Fare):** A alta assimetria na tarifa foi confirmada visualmente, o que justificou a transformação logarítmica.
+    
+    ![Distribuição Bruta da Tarifa (Fare)](plots/fare_distribution_histogram.png)
+
+---|
 
 ### 2.2. Engenharia de Features Chave (Feature Engineering)
 
@@ -66,9 +84,6 @@ Após a imputação de nulos (`Age` com Mediana, `Embarked` com Moda) e a transf
 
 A fase de preparação de dados foi finalizada, garantindo que o dataset esteja 100% numérico e pronto para o treinamento de modelos.
 
-* ✅ **Imputação e Transformação de Dados:** `Age`, `Embarked` e `Fare` foram tratados.
-* ✅ **Engenharia de Features:** `Title`, `FamilySize`, `IsAlone` e `Has_Cabin` foram criadas.
-
 ### 📊 Codificação e Seleção Final de Features
 
 | Ação | Resultado | Dimensões Finais |
@@ -77,23 +92,22 @@ A fase de preparação de dados foi finalizada, garantindo que o dataset esteja 
 | **Seleção Final** | Colunas originais redundantes (`Name`, `Ticket`, `Cabin`, `SibSp`, `Parch`, `Fare` original) removidas. | DataFrame final com **15 colunas** (`Survived` + 14 Features). |
 | **Divisão (Train/Test)** | Dados divididos em 80% Treino e 20% Teste. | Treino (`X_train`): **712 linhas** (80%). |
 
-### 🚀 Próximos Passos: Modelagem Preditiva
+## 4. Resultados Finais e Conclusão
 
-O projeto avança para o treinamento e avaliação:
+A fase final do projeto consistiu no treinamento e avaliação de dois modelos de Classificação no conjunto de teste (20% dos dados).
 
-1.  **Modelagem *Baseline*:** Treinamento do modelo de **Regressão Logística** (simples e interpretável) para estabelecer o desempenho inicial.
-2.  **Modelagem Avançada:** Treinamento do **Random Forest Classifier** para explorar ganhos de *performance*.
-3.  **Avaliação:** Uso de métricas como *Accuracy* e *Classification Report* para medir o sucesso preditivo.
+### 🏆 Desempenho dos Modelos
 
----
+| Modelo | Acurácia (Accuracy) | Precision (Classe 1 - Sobreviveu) | Recall (Classe 1 - Sobreviveu) |
+| :--- | :--- | :--- | :--- |
+| **Regressão Logística (Baseline)**| **0.8156 (81.56%)** | **0.79** | 0.71 |
+| **Random Forest Classifier** | 0.8045 (80.45%) | 0.75 | **0.74** |
 
-### 💡 Insights Chave da EDA Visual
+### Conclusão do Projeto
 
-Os gráficos de `seaborn.barplot` e `seaborn.boxplot` confirmaram:
-
-1.  **Status Social:** A taxa de sobrevivência é diretamente proporcional à **Classe do Bilhete** (`Pclass`).
-2.  **Idade e Gênero:** A regra "Mulheres e Crianças primeiro" é visível, sendo o **Gênero** o preditor categórico mais forte.
-3.  **Tarifa (Fare):** A alta assimetria e sua correlação com a `Pclass` reforçam que o poder de compra era um fator determinante.
+1.  **Regressão Logística como Modelo Final:** O modelo *Baseline* (Regressão Logística) demonstrou ser o mais eficiente, atingindo a **maior Acurácia geral (81.56%)** e a **maior Precisão (79%)** na previsão de sobrevivência. Isso indica que, quando o modelo prevê que um passageiro sobreviveu, ele está mais certo do que o Random Forest.
+2.  **Importância do Pré-processamento:** O sucesso dos modelos, mesmo de um modelo linear simples como a Regressão Logística, demonstra a eficácia da **Engenharia de Features** (como `Title` e `Has_Cabin`) na transformação dos dados brutos em preditores robustos.
+3.  **Sugestão de Continuidade:** Para tentar superar esta *baseline*, os próximos passos envolveriam **Otimização de Hiperparâmetros** (Grid Search ou Random Search) nos modelos, especialmente no Random Forest.
 
 ---
 
