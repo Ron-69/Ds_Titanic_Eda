@@ -40,14 +40,35 @@ A primeira etapa envolveu o uso de **`df.info()`** e **`df.describe(include='all
 
 ### 2.2. Engenharia de Features Chave (Feature Engineering)
 
-As seguintes *features* serão construídas para aumentar o poder preditivo do modelo, conforme os *insights* de negócio:
+Após a imputação de nulos (`Age` com Mediana, `Embarked` com Moda) e a transformação logarítmica de `Fare` (corrigindo a assimetria), as seguintes *features* preditivas foram criadas, gerando *insights* estatísticos robustos:
 
-* **Extração de Títulos:** A coluna `Name` será explorada para extrair o **Título do Passageiro** (`Mr.`, `Mrs.`, `Master.`, etc.), que é um poderoso preditor de status social e idade.
-* **Engenharia Familiar:** As colunas `SibSp` e `Parch` serão combinadas para criar a *feature* **`FamilySize`** e a *feature* binária **`IsAlone`** (Se o passageiro viajava sozinho), ambas com forte correlação com a sobrevivência.
+#### 💡 Resultados das Features Criadas
+
+| Feature | Descrição | Taxa de Sobrevivência (Média) | Insight Chave |
+| :--- | :--- | :--- | :--- |
+| **`Has_Cabin` (1)**| Passageiro com cabine registrada | **66.67%** | Confirma que a posse de cabine é um poderoso preditor de status e sobrevivência (Taxa 2x maior que quem não tinha). |
+| **`IsAlone` (0)** | Passageiro em grupo/família | **50.57%** | Passageiros que viajavam em grupo tiveram chance de sobrevivência significativamente maior do que os que viajavam sozinhos (30.35%). |
+| **`Title` (Mrs)** | Título de Casada | **79.37%** | O `Title` provou ser o preditor mais forte, com `Mrs` e `Miss` apresentando as taxas mais altas. `Mr` (homem adulto) possui a taxa mais baixa (15.67%). |
 
 ---
 
 ## 3. Conclusões e Plano de Ação (Próximos Passos)
+
+### 💡 Status das Fases
+
+* ✅ **Imputação de Dados:** `Age` e `Embarked` foram tratados com sucesso.
+* ✅ **Transformação de Dados:** `Fare` foi transformada via `log1p` para normalização.
+* ✅ **Engenharia de Features:** `Has_Cabin`, `IsAlone`, `FamilySize` e `Title` foram criadas.
+
+### 🚀 Próximos Passos no Pipeline
+
+O projeto avança para a fase final de preparação de dados antes da modelagem:
+
+1.  **Codificação:** Aplicação de **One-Hot Encoding** nas variáveis categóricas relevantes (`Sex`, `Embarked`, `Title`, `Pclass`).
+2.  **Seleção Final:** Remoção de colunas originais que não serão mais usadas (`Name`, `Ticket`, `Cabin`, `Fare`, `SibSp`, `Parch`).
+3.  **Modelagem Preditiva:** Treinamento e avaliação de modelos de Classificação (Regressão Logística, Random Forest) para prever `Survived`.
+
+---
 
 ### 💡 Insights Chave da EDA Visual
 
