@@ -44,15 +44,15 @@ A análise gráfica das relações entre as variáveis confirmou as hipóteses i
 
 1.  **Status Social e Gênero:** A sobrevivência foi fortemente influenciada pela `Pclass` e `Sex`.
     
-    ![Taxa de Sobrevivência por Gênero e Classe de Bilhete](plots/survival_rate_sex_pclass.png)
+    ![Taxa de Sobrevivência por Gênero e Classe de Bilhete](../Ds_Titanic_Eda_Python/notebooks/plots/survival_rate_sex_pclass.png)
 
 2.  **Idade e Outliers:** O Boxplot da Idade mostrou a distribuição em relação à sobrevivência.
     
-    ![Distribuição da Idade por Sobrevivência](plots/age_distribution_boxplot.png)
+    ![Distribuição da Idade por Sobrevivência](../Ds_Titanic_Eda_Python/notebooks/plots/age_distribution_boxplot.png)
 
 3.  **Tarifa (Fare):** A alta assimetria na tarifa foi confirmada visualmente, o que justificou a transformação logarítmica.
     
-    ![Distribuição Bruta da Tarifa (Fare)](plots/fare_distribution_histogram.png)
+    ![Distribuição Bruta da Tarifa (Fare)](../Ds_Titanic_Eda_Python/notebooks/plots/fare_distribution_histogram.png)
 
 ---|
 
