@@ -78,13 +78,6 @@ Os gráficos de `seaborn.barplot` e `seaborn.boxplot` confirmaram:
 2.  **Idade e Gênero:** A regra "Mulheres e Crianças primeiro" é visível, sendo o **Gênero** o preditor categórico mais forte.
 3.  **Tarifa (Fare):** A alta assimetria e sua correlação com a `Pclass` reforçam que o poder de compra era um fator determinante.
 
-### 🚀 Próximos Passos no Pipeline
-
-1.  **Pré-processamento:** Executar a imputação de nulos (`Age`, `Embarked`) e a transformação logarítmica de `Fare`.
-2.  **Feature Engineering:** Implementar a criação de `Title`, `FamilySize`, `IsAlone` e `Has_Cabin`.
-3.  **Codificação:** Aplicar **Codificação One-Hot** nas variáveis categóricas relevantes (ex: `Pclass`, `Embarked`, `Title`).
-4.  **Modelagem Preditiva:** Treinamento e avaliação de modelos de Classificação (Regressão Logística, Random Forest).
-
 ---
 
 ## 🔗 Estrutura do Repositório
