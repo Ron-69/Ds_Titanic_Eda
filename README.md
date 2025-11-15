@@ -103,6 +103,34 @@ A fase final do projeto consistiu no treinamento e avaliação de dois modelos d
 | **Regressão Logística (Baseline)**| **0.8156 (81.56%)** | **0.79** | 0.71 |
 | **Random Forest Classifier** | 0.8045 (80.45%) | 0.75 | **0.74** |
 
+### 4.1. Otimização e Validação do Random Forest via Grid Search
+
+Para tentar superar a acurácia de **81.56%** obtida pela Regressão Logística (*baseline*), o modelo **Random Forest Classifier** foi submetido a um processo de **Otimização de Hiperparâmetros** utilizando **Grid Search com Validação Cruzada (CV=5)**.
+
+O objetivo do Grid Search é testar sistematicamente um vasto espaço de parâmetros para encontrar a combinação ideal que maximize o desempenho (acurácia) e melhore a capacidade de generalização do modelo. 
+
+| Hiperparâmetro | Espaço de Busca |
+| :--- | :--- |
+| `n_estimators` | [50, 100, 200] (Número de árvores) |
+| `max_depth` | [5, 8, 15, None] (Profundidade da árvore) |
+| `min_samples_split` | [2, 5, 10] (Mínimo de amostras para dividir) |
+| `min_samples_leaf` | [1, 2, 4] (Mínimo de amostras em uma folha) |
+
+#### Resultados da Otimização
+
+| Métrica | Valor | Parâmetros Otimizados |
+| :--- | :--- | :--- |
+| **Melhor Acurácia (Cross-Validation)**| **0.8330** | `max_depth=15`, `min_samples_leaf=2`, `n_estimators=100` |
+
+Apesar de atingir 83.30% de acurácia durante a validação cruzada, o modelo otimizado obteve **81.01%** no conjunto de teste independente, confirmando que a Regressão Logística manteve a melhor *performance* geral.
+
+### Conclusão Final do Projeto após otimização do modelo Random Forest
+
+
+1.  **Modelo Vencedor:** A **Regressão Logística** é o modelo escolhido. Sua *performance* superior (81.56% de acurácia) demonstra que o relacionamento entre as *features* (especialmente as categóricas como `Title` e `Has_Cabin`) é predominantemente **linear** e foi bem capturado pela simplicidade do modelo.
+2.  **Eficácia da EDA e Engenharia de Features:** O sucesso do modelo simples confirma que a qualidade da **preparação dos dados** foi o fator preditivo mais crucial do projeto.
+
+---
 ### Conclusão do Projeto
 
 1.  **Regressão Logística como Modelo Final:** O modelo *Baseline* (Regressão Logística) demonstrou ser o mais eficiente, atingindo a **maior Acurácia geral (81.56%)** e a **maior Precisão (79%)** na previsão de sobrevivência. Isso indica que, quando o modelo prevê que um passageiro sobreviveu, ele está mais certo do que o Random Forest.
@@ -110,6 +138,12 @@ A fase final do projeto consistiu no treinamento e avaliação de dois modelos d
 3.  **Sugestão de Continuidade:** Para tentar superar esta *baseline*, os próximos passos envolveriam **Otimização de Hiperparâmetros** (Grid Search ou Random Search) nos modelos, especialmente no Random Forest.
 
 ---
+### 🏆 Desempenho Final dos Modelos
+
+| Modelo | Acurácia (Teste) | Precision (Classe 1) | Recall (Classe 1) | Observação |
+| :--- | :--- | :--- | :--- | :--- |
+| **Regressão Logística (Baseline)**| **0.8156** | **0.79** | 0.71 | Modelo mais simples, atingiu a **maior acurácia final** e maior precisão para a classe positiva. |
+| **Random Forest (Otimizado)** | 0.8101 | 0.80 | 0.68 | Não superou a *baseline*. Otimização alcançou **0.8330** em Cross-Validation, mas perdeu generalização no teste. |
 
 ## 🔗 Estrutura do Repositório
 
