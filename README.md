@@ -94,58 +94,31 @@ A fase de preparação de dados foi finalizada, garantindo que o dataset esteja 
 
 ## 4. Resultados Finais e Conclusão
 
-A fase final do projeto consistiu no treinamento e avaliação de dois modelos de Classificação no conjunto de teste (20% dos dados).
-
-### 🏆 Desempenho dos Modelos
-
-| Modelo | Acurácia (Accuracy) | Precision (Classe 1 - Sobreviveu) | Recall (Classe 1 - Sobreviveu) |
-| :--- | :--- | :--- | :--- |
-| **Regressão Logística (Baseline)**| **0.8156 (81.56%)** | **0.79** | 0.71 |
-| **Random Forest Classifier** | 0.8045 (80.45%) | 0.75 | **0.74** |
+A fase final do projeto envolveu o treinamento de modelos, seguido pela otimização de hiperparâmetros e padronização dos dados para garantir o melhor desempenho geral.
 
 ### 4.1. Otimização e Validação do Random Forest via Grid Search
 
-Para tentar superar a acurácia de **81.56%** obtida pela Regressão Logística (*baseline*), o modelo **Random Forest Classifier** foi submetido a um processo de **Otimização de Hiperparâmetros** utilizando **Grid Search com Validação Cruzada (CV=5)**.
+O modelo **Random Forest Classifier** foi submetido a um processo de **Otimização de Hiperparâmetros** utilizando **Grid Search com Validação Cruzada (CV=5)** para encontrar a combinação ideal de `n_estimators`, `max_depth`, `min_samples_split` e `min_samples_leaf`.
 
-O objetivo do Grid Search é testar sistematicamente um vasto espaço de parâmetros para encontrar a combinação ideal que maximize o desempenho (acurácia) e melhore a capacidade de generalização do modelo. 
+* **Melhores Parâmetros Encontrados (CV):** `max_depth=15`, `min_samples_leaf=2`, `n_estimators=100`.
+* **Melhor Acurácia em CV:** **0.8330**.
 
-| Hiperparâmetro | Espaço de Busca |
-| :--- | :--- |
-| `n_estimators` | [50, 100, 200] (Número de árvores) |
-| `max_depth` | [5, 8, 15, None] (Profundidade da árvore) |
-| `min_samples_split` | [2, 5, 10] (Mínimo de amostras para dividir) |
-| `min_samples_leaf` | [1, 2, 4] (Mínimo de amostras em uma folha) |
+A seguir, todos os modelos foram reavaliados utilizando **StandardScaler** nas *features* numéricas (`Age`, `Fare_Log`, `FamilySize`) para garantir que a escala não viesse a penalizar o desempenho.
 
-#### Resultados da Otimização
+### 🏆 4.2. Desempenho Final Consolidado dos Modelos
 
-| Métrica | Valor | Parâmetros Otimizados |
-| :--- | :--- | :--- |
-| **Melhor Acurácia (Cross-Validation)**| **0.8330** | `max_depth=15`, `min_samples_leaf=2`, `n_estimators=100` |
-
-Apesar de atingir 83.30% de acurácia durante a validação cruzada, o modelo otimizado obteve **81.01%** no conjunto de teste independente, confirmando que a Regressão Logística manteve a melhor *performance* geral.
-
-### Conclusão Final do Projeto após otimização do modelo Random Forest
-
-
-1.  **Modelo Vencedor:** A **Regressão Logística** é o modelo escolhido. Sua *performance* superior (81.56% de acurácia) demonstra que o relacionamento entre as *features* (especialmente as categóricas como `Title` e `Has_Cabin`) é predominantemente **linear** e foi bem capturado pela simplicidade do modelo.
-2.  **Eficácia da EDA e Engenharia de Features:** O sucesso do modelo simples confirma que a qualidade da **preparação dos dados** foi o fator preditivo mais crucial do projeto.
-
----
-### Conclusão do Projeto
-
-1.  **Regressão Logística como Modelo Final:** O modelo *Baseline* (Regressão Logística) demonstrou ser o mais eficiente, atingindo a **maior Acurácia geral (81.56%)** e a **maior Precisão (79%)** na previsão de sobrevivência.
-2.  **Validação da Otimização (Grid Search):** O esforço de otimizar o **Random Forest** foi fundamental para validar a *baseline*. Apesar de o RF otimizado não ter superado a RegLog no conjunto de teste (ficando em 81.01%), ele confirmou que a RegLog captura melhor o relacionamento linear das *features* criadas neste *dataset*.
-3.  **Importância da Engenharia de Features:** O sucesso do modelo simples confirma que a qualidade da **preparação dos dados** e a criação de *features* preditivas (como `Title` e `Has_Cabin`) foram os fatores mais cruciais para o desempenho final.
-
----
-
-### 🏆 Desempenho Final dos Modelos
+Apesar dos esforços de otimização, a **Regressão Logística Padronizada** manteve a melhor *performance* de generalização no conjunto de teste.
 
 | Modelo | Acurácia (Teste) | Precision (Classe 1) | Recall (Classe 1) | Observação |
 | :--- | :--- | :--- | :--- | :--- |
-| **Regressão Logística (Baseline)**| **0.8156** | **0.79** | 0.71 | Modelo mais simples, atingiu a **maior acurácia final** e maior precisão para a classe positiva. |
-| **Random Forest (Simples)** | 0.8045 | 0.75 | 0.74 | Perdeu para a *baseline* antes da otimização. |
-| **Random Forest (Otimizado)** | 0.8101 | 0.80 | 0.68 | Não superou a *baseline*. A otimização alcançou 83.30% em CV, mas perdeu generalização no teste. |
+| **Regressão Logística (Baseline)** | 0.8156 | **0.79** | 0.71 | Melhor modelo inicial e vencedor da otimização. |
+| **Regressão Logística (Padronizada)** | **0.8156** | 0.79 | 0.71 | **Não houve ganho**, indicando que as *features* criadas e o *log-transform* já haviam mitigado a sensibilidade de escala para este modelo. |
+| **Random Forest (Otimizado/Padronizado)** | 0.8101 | 0.80 | 0.68 | Aumento da *Precision*, mas perda de *Recall*, não superando o *baseline*. |
+
+### Conclusão Final do Projeto
+
+1.  **Modelo Vencedor:** A **Regressão Logística** é o modelo final com **81.56% de acurácia**. Seu sucesso demonstra que as relações entre as *features* criadas (`Title`, `Has_Cabin`, etc.) e a sobrevivência são **predominantemente lineares**.
+2.  **Fator de Sucesso:** A robustez da **Engenharia de Features** e do **Pré-processamento** (transformação logarítmica de `Fare` e imputação estratégica) foi o fator mais crucial para o desempenho.
 
 ---
 
