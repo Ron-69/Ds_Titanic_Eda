@@ -60,13 +60,30 @@ Após a imputação de nulos (`Age` com Mediana, `Embarked` com Moda) e a transf
 * ✅ **Transformação de Dados:** `Fare` foi transformada via `log1p` para normalização.
 * ✅ **Engenharia de Features:** `Has_Cabin`, `IsAlone`, `FamilySize` e `Title` foram criadas.
 
-### 🚀 Próximos Passos no Pipeline
+## 3. Conclusões e Plano de Ação (Próximos Passos)
 
-O projeto avança para a fase final de preparação de dados antes da modelagem:
+### 💡 Status da Preparação de Dados
 
-1.  **Codificação:** Aplicação de **One-Hot Encoding** nas variáveis categóricas relevantes (`Sex`, `Embarked`, `Title`, `Pclass`).
-2.  **Seleção Final:** Remoção de colunas originais que não serão mais usadas (`Name`, `Ticket`, `Cabin`, `Fare`, `SibSp`, `Parch`).
-3.  **Modelagem Preditiva:** Treinamento e avaliação de modelos de Classificação (Regressão Logística, Random Forest) para prever `Survived`.
+A fase de preparação de dados foi finalizada, garantindo que o dataset esteja 100% numérico e pronto para o treinamento de modelos.
+
+* ✅ **Imputação e Transformação de Dados:** `Age`, `Embarked` e `Fare` foram tratados.
+* ✅ **Engenharia de Features:** `Title`, `FamilySize`, `IsAlone` e `Has_Cabin` foram criadas.
+
+### 📊 Codificação e Seleção Final de Features
+
+| Ação | Resultado | Dimensões Finais |
+| :--- | :--- | :--- |
+| **One-Hot Encoding (OHE)** | Aplicado em `Sex`, `Embarked`, `Title` e `Pclass`. | +8 Novas colunas binárias criadas. |
+| **Seleção Final** | Colunas originais redundantes (`Name`, `Ticket`, `Cabin`, `SibSp`, `Parch`, `Fare` original) removidas. | DataFrame final com **15 colunas** (`Survived` + 14 Features). |
+| **Divisão (Train/Test)** | Dados divididos em 80% Treino e 20% Teste. | Treino (`X_train`): **712 linhas** (80%). |
+
+### 🚀 Próximos Passos: Modelagem Preditiva
+
+O projeto avança para o treinamento e avaliação:
+
+1.  **Modelagem *Baseline*:** Treinamento do modelo de **Regressão Logística** (simples e interpretável) para estabelecer o desempenho inicial.
+2.  **Modelagem Avançada:** Treinamento do **Random Forest Classifier** para explorar ganhos de *performance*.
+3.  **Avaliação:** Uso de métricas como *Accuracy* e *Classification Report* para medir o sucesso preditivo.
 
 ---
 
