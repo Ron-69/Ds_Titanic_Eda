@@ -133,18 +133,22 @@ Apesar de atingir 83.30% de acurácia durante a validação cruzada, o modelo ot
 ---
 ### Conclusão do Projeto
 
-1.  **Regressão Logística como Modelo Final:** O modelo *Baseline* (Regressão Logística) demonstrou ser o mais eficiente, atingindo a **maior Acurácia geral (81.56%)** e a **maior Precisão (79%)** na previsão de sobrevivência. Isso indica que, quando o modelo prevê que um passageiro sobreviveu, ele está mais certo do que o Random Forest.
-2.  **Importância do Pré-processamento:** O sucesso dos modelos, mesmo de um modelo linear simples como a Regressão Logística, demonstra a eficácia da **Engenharia de Features** (como `Title` e `Has_Cabin`) na transformação dos dados brutos em preditores robustos.
-3.  **Sugestão de Continuidade:** Para tentar superar esta *baseline*, os próximos passos envolveriam **Otimização de Hiperparâmetros** (Grid Search ou Random Search) nos modelos, especialmente no Random Forest.
+1.  **Regressão Logística como Modelo Final:** O modelo *Baseline* (Regressão Logística) demonstrou ser o mais eficiente, atingindo a **maior Acurácia geral (81.56%)** e a **maior Precisão (79%)** na previsão de sobrevivência.
+2.  **Validação da Otimização (Grid Search):** O esforço de otimizar o **Random Forest** foi fundamental para validar a *baseline*. Apesar de o RF otimizado não ter superado a RegLog no conjunto de teste (ficando em 81.01%), ele confirmou que a RegLog captura melhor o relacionamento linear das *features* criadas neste *dataset*.
+3.  **Importância da Engenharia de Features:** O sucesso do modelo simples confirma que a qualidade da **preparação dos dados** e a criação de *features* preditivas (como `Title` e `Has_Cabin`) foram os fatores mais cruciais para o desempenho final.
 
 ---
+
 ### 🏆 Desempenho Final dos Modelos
 
 | Modelo | Acurácia (Teste) | Precision (Classe 1) | Recall (Classe 1) | Observação |
 | :--- | :--- | :--- | :--- | :--- |
 | **Regressão Logística (Baseline)**| **0.8156** | **0.79** | 0.71 | Modelo mais simples, atingiu a **maior acurácia final** e maior precisão para a classe positiva. |
-| **Random Forest (Otimizado)** | 0.8101 | 0.80 | 0.68 | Não superou a *baseline*. Otimização alcançou **0.8330** em Cross-Validation, mas perdeu generalização no teste. |
+| **Random Forest (Simples)** | 0.8045 | 0.75 | 0.74 | Perdeu para a *baseline* antes da otimização. |
+| **Random Forest (Otimizado)** | 0.8101 | 0.80 | 0.68 | Não superou a *baseline*. A otimização alcançou 83.30% em CV, mas perdeu generalização no teste. |
+
+---
 
 ## 🔗 Estrutura do Repositório
 
-ds_titanic_eda_python/ ├── venv/ # Ignorado pelo Git (Ambiente Virtual) ├── notebooks/ │ └── ds_titanic_eda.ipynb # Notebook principal com EDA e código de Feature Engineering ├── data/ │ └── Titanic-Dataset.csv ├── README.md # Este arquivo ├── requirements.txt # Lista de dependências └── .gitignore # Arquivo para exclusão de pastas (venv/) e arquivos de sistema
+ds_titanic_eda_python/ ├── venv/ # Ignorado pelo Git (Ambiente Virtual) ├── notebooks/ │ ├── plots/ # Novo: Contém os gráficos da EDA Visual (.png) │ └── ds_titanic_eda.ipynb # Notebook principal com EDA, Feature Engineering e Modelagem ├── data/ │ └── Titanic-Dataset.csv # Dataset principal, usado para treino e análise. ├── README.md # Este arquivo (Documentação do Projeto) ├── requirements.txt # Lista de dependências └── .gitignore # Arquivo para exclusão de pastas (venv/) e arquivos de sistema
